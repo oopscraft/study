@@ -41,7 +41,7 @@
         <property name="validationQuery" value="${dataSource.olap.validationQuery}"/>
     </bean> 
     
-	<!-- Define transasction Manager -->
+	<!-- Define transaction Manager -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" lazy-init="true">
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
