@@ -5,6 +5,10 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.jasypt.encryption.StringEncryptor;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
+import org.jasypt.spring3.properties.EncryptablePropertyPlaceholderConfigurer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
@@ -13,6 +17,8 @@ import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerF
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 @Configuration
@@ -50,6 +56,18 @@ public class StudyApplication {
 				}catch(Exception ignore) {}
 			}
 		}
+	}
+	
+	@Bean
+	public EncryptablePropertyPlaceholderConfigurer propertyPlaceholderConfigurer() throws Exception {
+		EnvironmentStringPBEConfig config = new EnvironmentStringPBEConfig();
+		config.setAlgorithm("PBEWithMD5AndDES");
+		StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
+		encryptor.setConfig(config);
+		encryptor.setPassword("password");
+		EncryptablePropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new EncryptablePropertyPlaceholderConfigurer(encryptor);
+		propertyPlaceholderConfigurer.setLocation(new FileSystemResource(new File("conf/application.properties")));
+		return propertyPlaceholderConfigurer;
 	}
 	
 	@Bean
