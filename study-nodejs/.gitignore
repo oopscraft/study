@@ -1,2 +1,6 @@
 /.project
 /.settings/
+*.pid
+*.swo
+*.swp
+/log/
