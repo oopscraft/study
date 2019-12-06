@@ -1,17 +1,12 @@
 {
-  "compilerOptions": {
-    "declaration": false,
-    "emitDecoratorMetadata": false,
-    "experimentalDecorators": false,
-    "module": "none",
-    "moduleResolution": "node",
-    "noFallthroughCasesInSwitch": false,
-    "noImplicitAny": false,
-    "noImplicitReturns": false,
-    "removeComments": false,
-    "sourceMap": false,
-    "strictNullChecks": false,
-    "target": "es3"
-  },
-  "compileOnSave": true
+	"compilerOptions": {
+	    "target": "es3",
+	    "strict": true,
+	    "declaration": true,
+	    "outDir": "./dist"
+	},
+	"compileOnSave": true,
+	"include": [
+		"./src/**/*"
+	]
 }

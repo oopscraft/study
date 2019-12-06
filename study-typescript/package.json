@@ -1,7 +1,25 @@
 {
-  "author": "chomookun",
-  "name": "test-typescript",
-  "version": "0.0.0",
-  "description": "Generated with typescript.java",
-  "license": "MIT"
+  "name": "duice",
+  "version": "0.1.2",
+  "description": "DUICE(Data-oriented javascript UI Component Engine)",
+  "homepage": "http://duice.oopscraft.net",
+  "main": "duice",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mysql": "^2.16.0",
+    "squel": "^5.12.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oopscraft/duice.git"
+  },
+  "author": "chomookun@gmail.ocm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oopscraft/duice/issues"
+  }
 }
