@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:aop="http://www.springframework.org/schema/aop" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/websocket 
+        http://www.springframework.org/schema/websocket/spring-websocket.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/data/jpa 
+		http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+        ">
+	
+	<!-- ====================================================== -->
+	<!-- Defines PEB											-->
+	<!-- ====================================================== -->
+    <bean id="environmentVariablesConfiguration" class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+        <property name="algorithm" value="PBEWithMD5AndDES" />
+        <property name="passwordEnvName" value="APP_ENCRYPTION_PASSWORD" />
+    </bean>
+    <bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+        <property name="config" ref="environmentVariablesConfiguration" />
+        <property name="password" value="abcd1234!" />
+    </bean>
+	<bean id="propertyPlaceholderConfigurer" class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
+	   <constructor-arg ref="configurationEncryptor" />
+	   <property name="locations">
+			<list>
+				<value>WEB-INF/conf/application.properties</value>
+			</list>
+	   </property>
+	</bean>
+    
+	<!-- ====================================================== -->
+	<!-- DataSource Definition									-->
+	<!-- ====================================================== -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${application.dataSource.driver}" />
+        <property name="url" value="${application.dataSource..url}" />
+        <property name="username" value="${application.dataSource.username}" />
+        <property name="password" value="${application.dataSource.password}" />
+        <property name="defaultAutoCommit" value="false"/>
+        <property name="initialSize" value="${application.dataSource.initialSize}"/>
+        <property name="maxActive" value="${application.dataSource.maxActive}" />
+        <property name="testOnBorrow" value="true"/>
+        <property name="validationQuery" value="${application.dataSource.validationQuery}"/>
+    </bean> 
+    
+	<!-- ====================================================== -->
+	<!-- Integration with JAP and Hibernate						-->
+	<!-- ====================================================== 
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="showSql" value="true" />
+			</bean>
+        </property>
+        <property name="packagesToScan" value="net.oopscraft.application"/>
+    </bean>
+	<bean id="jpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+    	<property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+	<jpa:repositories base-package="net.oopscraft.application" 
+		entity-manager-factory-ref="entityManagerFactory"
+		transaction-manager-ref="jpaTransactionManager"/>
+	<tx:annotation-driven transaction-manager="jpaTransactionManager"/>
+	-->
+	 
+	<!-- ====================================================== -->
+	<!-- Integration with MYBATIS 								-->
+	<!-- ====================================================== 
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations">
+			<array>
+				<value>classpath*:net/oopscraft/application/**/*Mapper.xml</value>
+			</array>
+		</property>
+		<property name="configuration">
+			<bean class="org.apache.ibatis.session.Configuration">
+				<property name="cacheEnabled" value="false"/>
+				<property name="callSettersOnNulls" value="true"/>
+				<property name="mapUnderscoreToCamelCase" value="true"/>
+			</bean>
+		</property>
+    </bean>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="net.oopscraft.application.**.mapper" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+		<property name="nameGenerator" ref="beanNameGenerator"/>
+	</bean>
+	<bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>
+	-->
+
+	<!-- ====================================================== -->
+	<!-- Scans Components 										-->
+	<!-- ====================================================== -->
+	<mvc:annotation-driven/>
+	<context:component-scan base-package="net.oopscraft.application"/>
+
+	<!-- ====================================================== -->
+	<!-- Message Source											-->
+	<!-- ====================================================== -->
+	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="/WEB-INF/conf/i18n/message"/>
+		<property name="fallbackToSystemLocale" value="false"/>
+		<property name="defaultEncoding" value="UTF-8"/>	         
+		<property name="cacheSeconds" value="3"/>
+	</bean>
+
+
+</beans>
