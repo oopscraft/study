@@ -55,3 +55,38 @@ user@host> ./bin/kafka-server-stop.sh
 
 ```
 
+## Kafka CLI
+```
+# list of topic
+user@host> ./bin/kafka-topics.sh --bootstrap-server localhost:9092 --list
+
+# list consumer group
+user@host> ./bin/kafka-consumer-groups.sh --bootstrap-server localhost:9092 --list
+
+# creates topic
+user@host> ./bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic test2
+
+# describes topic
+user@hst> ./bin/kafka-topics.sh --describe --bootstrap-server localhost:9092 --topic test2
+
+# send message
+user@host> ./bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic test2
+
+# receives message./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test2 --from-beginning
+user@host> 
+
+```
+
+## Throwable shooting
+
+### window10 subsystem(WSL)에 설치시 연결 않되는 문제
+> hosts파일(C:\Windows\System32\drivers\etc\hosts)에 subsystem 내용 추가
+
+## Reference
+
+### Consumer Group
+https://www.popit.kr/kafka-consumer-group/
+
+### KAFKA Tool (GUI Client)
+https://www.kafkatool.com/
+
