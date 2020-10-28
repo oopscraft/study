@@ -7,5 +7,6 @@
   <packaging>pom</packaging>
   <modules>
     <module>study-aws</module>
+    <module>study-asm</module>
   </modules>
 </project>
