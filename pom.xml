@@ -8,5 +8,7 @@
   <modules>
     <module>study-aws</module>
     <module>study-asm</module>
+    <module>study-spark</module>
+    <module>study-kubernetes</module>
   </modules>
 </project>
