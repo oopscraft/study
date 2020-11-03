@@ -2,7 +2,11 @@
 ```
 $ curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.19.0/bin/windows/amd64/kubectl.exe
 
+$ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+$ sudo dpkg -i minikube_latest_amd64.deb
 
+# start
+$ sudo minikube start --driver=none
 ```
 
 # Kubernetes
